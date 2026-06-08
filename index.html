@@ -4,11 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shayaan</title>
+
   <link
-  rel="icon"
-  type="image/svg+xml"
-  href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
-/>
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+  />
+
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -493,7 +506,7 @@
   <section>
     <p class="section-label">Education</p>
     <ul>
-      <li>BSc Computer Science — Simon Fraser University</li>
+      <li>BSc Computer Science, Simon Fraser University</li>
       <li>Co-op Program · CGPA ~3.5</li>
     </ul>
   </section>
@@ -512,31 +525,22 @@
   </footer>
 
   <script>
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    function toggleTheme() {
+      const btn = document.getElementById('themeBtn');
+      btn.classList.add('spinning');
 
-  if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  } else {
-    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-  }
+      setTimeout(() => {
+        const html = document.documentElement;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
 
-  function toggleTheme() {
-    const btn = document.getElementById('themeBtn');
-    btn.classList.add('spinning');
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
 
-    setTimeout(() => {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      const newTheme = isDark ? 'light' : 'dark';
-
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-
-      btn.classList.remove('spinning');
-    }, 200);
-  }
-</script>
+        btn.classList.remove('spinning');
+      }, 200);
+    }
+  </script>
 
 </body>
 </html>
