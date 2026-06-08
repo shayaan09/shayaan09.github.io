@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -512,17 +512,31 @@
   </footer>
 
   <script>
-    function toggleTheme() {
-      const btn = document.getElementById('themeBtn');
-      btn.classList.add('spinning');
-      setTimeout(() => {
-        const html = document.documentElement;
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        btn.classList.remove('spinning');
-      }, 200);
-    }
-  </script>
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  } else {
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+
+  function toggleTheme() {
+    const btn = document.getElementById('themeBtn');
+    btn.classList.add('spinning');
+
+    setTimeout(() => {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+
+      btn.classList.remove('spinning');
+    }, 200);
+  }
+</script>
 
 </body>
 </html>
